@@ -39,6 +39,8 @@
 		D160256D1C5B9CB400A1013E /* Passenger+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF77B81C5299EE00E146D0 /* Passenger+CoreDataProperties.swift */; };
 		D160256E1C5B9CC500A1013E /* Baggage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF77B21C5299EE00E146D0 /* Baggage+CoreDataProperties.swift */; };
 		D160256F1C5B9CC500A1013E /* Baggage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF77B41C5299EE00E146D0 /* Baggage.swift */; };
+		D16025741C5F89F700A1013E /* NSManagedObject+DKDBManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16025731C5F89F700A1013E /* NSManagedObject+DKDBManagerTest.swift */; };
+		D16025751C5F8CD900A1013E /* MockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF77BF1C5299EE00E146D0 /* MockManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,7 @@
 		75FF77F71C529A6300E146D0 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		9D3FB5BF87290C7FFC0223F0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D16025671C5B877300A1013E /* DKDBManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKDBManagerTest.swift; sourceTree = "<group>"; };
+		D16025731C5F89F700A1013E /* NSManagedObject+DKDBManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+DKDBManagerTest.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				D16025671C5B877300A1013E /* DKDBManagerTest.swift */,
+				D16025731C5F89F700A1013E /* NSManagedObject+DKDBManagerTest.swift */,
 				75C5CB5519DBE8DA002BA192 /* Supporting Files */,
 			);
 			name = Tests;
@@ -410,12 +414,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D16025741C5F89F700A1013E /* NSManagedObject+DKDBManagerTest.swift in Sources */,
 				D160256E1C5B9CC500A1013E /* Baggage+CoreDataProperties.swift in Sources */,
 				D160256B1C5B9CA500A1013E /* Constants.swift in Sources */,
 				D16025691C5B9BC700A1013E /* Plane+CoreDataProperties.swift in Sources */,
 				D160256F1C5B9CC500A1013E /* Baggage.swift in Sources */,
 				D160256C1C5B9CAF00A1013E /* Passenger.swift in Sources */,
 				D160256D1C5B9CB400A1013E /* Passenger+CoreDataProperties.swift in Sources */,
+				D16025751C5F8CD900A1013E /* MockManager.swift in Sources */,
 				D16025681C5B877300A1013E /* DKDBManagerTest.swift in Sources */,
 				D160256A1C5B9BC700A1013E /* Plane.swift in Sources */,
 				75FF77D81C5299EE00E146D0 /* DBSwiftTest.xcdatamodeld in Sources */,

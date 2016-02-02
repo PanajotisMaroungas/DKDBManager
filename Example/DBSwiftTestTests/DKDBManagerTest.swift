@@ -17,7 +17,7 @@ class DKDBManagerTest: XCTestCase {
     }
     
     override func tearDown() {
-		MockManager.reset()
+		MockDBManager.reset()
 
 		super.tearDown()
     }
@@ -32,12 +32,12 @@ extension DKDBManagerTest {
 	func testEntityClassNames() {
 
 		// Set
-		MockManager.addDemoEntityWithName("TestClass")
-		MockManager.addDemoEntityWithName("TestClassA")
-		MockManager.addDemoEntityWithName("TestClassB")
+		MockDBManager.addDemoEntityWithName("TestClass")
+		MockDBManager.addDemoEntityWithName("TestClassA")
+		MockDBManager.addDemoEntityWithName("TestClassB")
 
 		// Call + Assert
-		XCTAssertEqual(["TestClass","TestClassA","TestClassB"], (MockManager.entityClassNames() as? [String]) ?? [])
+		XCTAssertEqual(["TestClass","TestClassA","TestClassB"], (MockDBManager.entityClassNames() as? [String]) ?? [])
 	}
 }
 
@@ -48,12 +48,26 @@ extension DKDBManagerTest {
 	func testCleanUpShouldDeleteStoredIdentifiers() {
 
 		// Set + Call
-		MockManager.cleanUp()
+		MockDBManager.cleanUp()
 
 		// Assert
-		XCTAssertTrue(MockManager.sharedInstance().storedIdentifiers.count == 0)
+		XCTAssertTrue(MockDBManager.sharedInstance().storedIdentifiers.count == 0)
 	}
 
+}
+
+// MARK: - DELETE
+
+extension DKDBManagerTest {
+
+	func testRemoveDeprecatedEntitiesInContext(){
+
+		// Set + Call
+		MockDBManager.removeDeprecatedEntitiesInContext(NSManagedObjectContext())
+
+		// Assert
+		XCTAssertTrue(MockDBManager.deletedEntities?.count == MockDBManager.entityClassNames().count)
+	}
 }
 
 // MARK: - Testing Log Methods
@@ -65,19 +79,19 @@ extension DKDBManagerTest {
 	func testSetVerboseTrue() {
 
 		// Set + Call
-		MockManager.setVerbose(true)
+		MockDBManager.setVerbose(true)
 
 		// Assert
-		XCTAssertEqual(MockManager.loggingLevel(), MagicalRecord.loggingLevel())
+		XCTAssertEqual(MockDBManager.loggingLevel(), MagicalRecord.loggingLevel())
 	}
 
 	func testSetVerboseFalse() {
 
 		// Set + Call
-		MockManager.setVerbose(false)
+		MockDBManager.setVerbose(false)
 
 		// Assert
-		XCTAssertEqual(MockManager.loggingLevel(), MagicalRecord.loggingLevel())
+		XCTAssertEqual(MockDBManager.loggingLevel(), MagicalRecord.loggingLevel())
 	}
 }
 
@@ -88,54 +102,54 @@ extension DKDBManagerTest  {
 	func testSetupDatabaseWithResetSucceed() {
 
 		// Set
-		MockManager.setResetStoredEntities(true)
-		MockManager.allowsEraseDatabaseForName = true
+		MockDBManager.setResetStoredEntities(true)
+		MockDBManager.allowsEraseDatabaseForName = true
 
 		// Call
-		MockManager.setupDatabaseWithName("TestDB") { () -> Void in
+		MockDBManager.setupDatabaseWithName("TestDB") { () -> Void in
 			// db reseted 
 		}
 
 		// Assert
-		XCTAssertTrue(MockManager.didResetDatabaseBlockExecuted == true)
+		XCTAssertTrue(MockDBManager.didResetDatabaseBlockExecuted == true)
 	}
 
 	func testSetupDatabaseWithResetFailsDueWhenStoredEntitiesToFalse() {
 
 		// Set
-		MockManager.setResetStoredEntities(false)
-		MockManager.allowsEraseDatabaseForName = true
+		MockDBManager.setResetStoredEntities(false)
+		MockDBManager.allowsEraseDatabaseForName = true
 
 		// Call
-		MockManager.setupDatabaseWithName("TestDB") { () -> Void in
+		MockDBManager.setupDatabaseWithName("TestDB") { () -> Void in
 			// db reseted
 		}
 
 		// Assert
-		XCTAssertTrue(MockManager.didResetDatabaseBlockExecuted == false)
+		XCTAssertTrue(MockDBManager.didResetDatabaseBlockExecuted == false)
 	}
 
 	func testSetupDatabaseWithResetFailsWhenTheDatabaseCannotBeDeleted() {
 
 		// Set
-		MockManager.setResetStoredEntities(true)
-		MockManager.allowsEraseDatabaseForName = false
+		MockDBManager.setResetStoredEntities(true)
+		MockDBManager.allowsEraseDatabaseForName = false
 
 		// Call
-		MockManager.setupDatabaseWithName("TestDB") { () -> Void in
+		MockDBManager.setupDatabaseWithName("TestDB") { () -> Void in
 			// db reseted
 		}
 
 		// Assert
-		XCTAssertTrue(MockManager.didResetDatabaseBlockExecuted == false)
+		XCTAssertTrue(MockDBManager.didResetDatabaseBlockExecuted == false)
 	}
 
 	func testIfSetupDatabaseDidResetWasCalled() {
 		// Set + Call
-		MockManager.setupDatabaseWithName("TestDB")
+		MockDBManager.setupDatabaseWithName("TestDB")
 
 		// Assert
-		XCTAssertTrue(MockManager.setupDatabseDidResetCalled == true)
+		XCTAssertTrue(MockDBManager.setupDatabseDidResetCalled == true)
 	}
 
 }
@@ -147,25 +161,25 @@ extension DKDBManagerTest {
 	func testCalldumpCountWithVerbose() {
 
 		// Set
-		MockManager.setVerbose(true)
+		MockDBManager.setVerbose(true)
 
 		// Call
-		MockManager.dumpCount()
+		MockDBManager.dumpCount()
 
 		// Assert
-		XCTAssertTrue(MockManager.dumpCountInContextIsCalled == true)
+		XCTAssertTrue(MockDBManager.dumpCountInContextIsCalled == true)
 	}
 
 	func testCalldumpCountWithoutVerbose() {
 
 		// Set
-		MockManager.setVerbose(false)
+		MockDBManager.setVerbose(false)
 
 		// Call
-		MockManager.dumpCount()
+		MockDBManager.dumpCount()
 
 		// Assert
-		XCTAssertTrue(MockManager.dumpCountInContextIsCalled == false)
+		XCTAssertTrue(MockDBManager.dumpCountInContextIsCalled == false)
 	}
 }
 
@@ -176,33 +190,33 @@ extension DKDBManagerTest {
 	func testCalldumpWithVerbose() {
 
 		// Set
-		MockManager.setVerbose(true)
+		MockDBManager.setVerbose(true)
 
 		// Call
-		MockManager.dump()
+		MockDBManager.dump()
 
 		// Assert
-		XCTAssertTrue(MockManager.dumpInContextIsCalled == true)
+		XCTAssertTrue(MockDBManager.dumpInContextIsCalled == true)
 	}
 
 	func testCalldumpWithoutVerbose() {
 
 		// Set
-		MockManager.setVerbose(false)
+		MockDBManager.setVerbose(false)
 
 		// Call
-		MockManager.dumpCount()
+		MockDBManager.dumpCount()
 
 		// Assert
-		XCTAssertTrue(MockManager.dumpInContextIsCalled == false)
+		XCTAssertTrue(MockDBManager.dumpInContextIsCalled == false)
 	}
 }
 
-// MARK: - MockManager subclass of DKDBManager
+// MARK: - MockDBManager subclass of DKDBManager
 
-class MockManager : DKDBManager {
+class MockDBManager : DKDBManager {
 
-	// MARK: -  Static Properties of MockManager
+	// MARK: -  Static Properties of MockDBManager
 
 	static var context							= NSManagedObjectContext()
 
@@ -216,6 +230,7 @@ class MockManager : DKDBManager {
 
 	static var demoEntities 					: [NSEntityDescription]?
 
+	static var deletedEntities					: [String]?
 
 	// MARK: - DB Methods
 
@@ -279,7 +294,19 @@ class MockManager : DKDBManager {
 			self.dumpInContextIsCalled 		= false
 			return
 		}
+
 		self.dumpInContextIsCalled 			= true
+	}
+
+	// MARK: - DELETE
+
+	override class func removeDeprecatedEntitiesInContext(context: NSManagedObjectContext) {
+
+		self.deletedEntities = [String]()
+
+		for className in self.entityClassNames() {
+				self.deletedEntities?.append((className as? String) ?? "")
+		}
 	}
 
 	// MARK: - Helpers
@@ -303,5 +330,6 @@ class MockManager : DKDBManager {
 		self.didResetDatabaseBlockExecuted 	= false
 		self.setupDatabseDidResetCalled		= false
 		self.demoEntities?.removeAll()
+		self.deletedEntities?.removeAll()
 	}
 }
